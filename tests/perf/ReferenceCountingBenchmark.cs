@@ -1,10 +1,13 @@
 ﻿namespace Python.Runtime.Native {
     using System;
+    using AdvancedDLSupport;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
 
     [SimpleJob(RuntimeMoniker.CoreRt30)]
     [SimpleJob(RuntimeMoniker.Net48)]
+    [SimpleJob(RuntimeMoniker.Mono)]
+    [SimpleJob(RuntimeMoniker.NetCoreApp30)]
     public class ReferenceCountingBenchmark: IDisposable {
         readonly IntPtr testObject;
         readonly PInvoke python = new PInvoke();
@@ -19,8 +22,13 @@
             this.RefCounting(new Borrowed<PyObject>(this.testObject), new MarshalReferenceCounting());
         }
 
+        [Benchmark]
+        public void RefCounting_Calli() {
+            this.RefCounting(new Borrowed<PyObject>(this.testObject), new AdvancedDLReferenceCounting());
+        }
+
         void RefCounting(Borrowed<PyObject> pyObject, IPythonReferenceCounting referenceCounting) {
-            const int iterations = 100000;
+            const int iterations = 400000;
             for (int iteration = 0; iteration < iterations; iteration++) {
                 referenceCounting.Py_IncRef(pyObject);
                 referenceCounting.Py_DecRef(pyObject);
