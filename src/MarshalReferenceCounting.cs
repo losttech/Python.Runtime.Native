@@ -2,6 +2,7 @@
     using System;
     using System.ComponentModel;
     using System.Runtime.InteropServices;
+    using System.Security;
 
     public sealed class MarshalReferenceCounting : IPythonReferenceCounting {
         public void Py_IncRef(Borrowed<PyObject> pyObject) => IncRef.Invoke(pyObject.DangerousGetHandle());
@@ -10,6 +11,8 @@
         static readonly PyObjectOp IncRef;
         static readonly PyObjectOp DecRef;
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        [SuppressUnmanagedCodeSecurity]
         delegate void PyObjectOp(IntPtr pyObject);
 
         static MarshalReferenceCounting() {
