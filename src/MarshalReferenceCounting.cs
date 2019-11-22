@@ -4,13 +4,13 @@
     using System.Runtime.InteropServices;
 
     public sealed class MarshalReferenceCounting : IPythonReferenceCounting {
-        public void Py_IncRef(Borrowed<PyObject> pyObject) => IncRef.Invoke(pyObject);
-        public void Py_DecRef(Borrowed<PyObject> pyObject) => DecRef.Invoke(pyObject);
+        public void Py_IncRef(Borrowed<PyObject> pyObject) => IncRef.Invoke(pyObject.DangerousGetHandle());
+        public void Py_DecRef(Borrowed<PyObject> pyObject) => DecRef.Invoke(pyObject.DangerousGetHandle());
 
         static readonly PyObjectOp IncRef;
         static readonly PyObjectOp DecRef;
 
-        delegate void PyObjectOp(Borrowed<PyObject> pyObject);
+        delegate void PyObjectOp(IntPtr pyObject);
 
         static MarshalReferenceCounting() {
             var python = Check(NativeMethods.LoadLibrary(Py.Dll + ".dll"));
