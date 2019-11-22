@@ -25,6 +25,9 @@
         public static bool operator !=(Borrowed<T> left, Borrowed<T> right)
             => !(left == right);
 
+        [Pure]
+        internal IntPtr DangerousGetHandle() => this.handle;
+
         // ref struct can never be boxed, so it is impossible to call this via base class (object)
 #pragma warning disable CS0809 // Obsolete member overrides non-obsolete member
         [Obsolete(message: "This method should never be called, as ref struct can not be boxed", error: true)]
