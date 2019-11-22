@@ -1,7 +1,10 @@
 ﻿namespace Python.Runtime.Native {
     using System;
     using BenchmarkDotNet.Attributes;
+    using BenchmarkDotNet.Jobs;
 
+    [SimpleJob(RuntimeMoniker.CoreRt30)]
+    [SimpleJob(RuntimeMoniker.Net48)]
     public class ReferenceCountingBenchmark: IDisposable {
         readonly IntPtr testObject;
         readonly PInvoke python = new PInvoke();
