@@ -1,6 +1,5 @@
 ﻿namespace Python.Runtime.Native {
     using System;
-    using AdvancedDLSupport;
     using BenchmarkDotNet.Attributes;
     using BenchmarkDotNet.Jobs;
 
@@ -24,7 +23,14 @@
 
         [Benchmark]
         public void RefCounting_Calli() {
-            this.RefCounting(new Borrowed<PyObject>(this.testObject), new AdvancedDLReferenceCounting());
+            this.RefCounting(new Borrowed<PyObject>(this.testObject),
+                new SafeReferenceCountingWrapper(AdvancedDLReferenceCounting.Unsafe));
+        }
+
+        [Benchmark]
+        public void RefCounting_EmitBinder() {
+            this.RefCounting(new Borrowed<PyObject>(this.testObject),
+                new SafeReferenceCountingWrapper(EmitBinderReferenceCounting.Unsafe));
         }
 
         void RefCounting(Borrowed<PyObject> pyObject, IPythonReferenceCounting referenceCounting) {
