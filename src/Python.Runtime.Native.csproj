@@ -11,6 +11,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NativeLibraryLoader" Version="1.0.12" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.6.0" />
+    <PackageReference Include="System.Reflection.Emit.Lightweight" Version="4.7.0-preview3.19551.4" />
   </ItemGroup>
 
 </Project>

@@ -36,7 +36,7 @@
                 var pinvoke = implementationBuilder.DefinePInvokeMethod(
                     name: methodInfo.Name,
                     dllName: libraryPath,
-                    MethodAttributes.Static,
+                    MethodAttributes.Static | MethodAttributes.PinvokeImpl,
                     CallingConventions.Standard,
                     methodInfo.ReturnType,
                     parameters.Select(p => p.ParameterType).ToArray(),
